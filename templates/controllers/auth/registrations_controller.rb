@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # User registration and password resets
-class User::RegistrationsController < ApplicationController
+class Auth::RegistrationsController < ApplicationController
   skip_before_action :require_login
 
   # Sign up form

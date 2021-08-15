@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # user related mails
-class UserMailer < ApplicationMailer
+class AuthMailer < ApplicationMailer
   default from: 'from@example.com'
   layout 'mailer'
 

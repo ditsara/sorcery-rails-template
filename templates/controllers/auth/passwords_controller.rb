@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Reset password flow
-class User::PasswordsController < ApplicationController
+class Auth::PasswordsController < ApplicationController
   skip_before_action :require_login
 
   def new; end
@@ -9,7 +9,7 @@ class User::PasswordsController < ApplicationController
   def create
     @user = User.find_by email: params[:email]
     @user&.generate_reset_password_token!
-    UserMailer.reset_password_email(@user).deliver_now
+    AuthMailer.reset_password_email(@user).deliver_now
     redirect_to({ action: :new }, flash: { info: 'please check your email' })
   end
 

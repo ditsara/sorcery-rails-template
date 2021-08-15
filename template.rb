@@ -6,8 +6,28 @@ def apply_template!
   # write each of our template files into the appropriate location
   
 
-  file "app/mailers/user_mailer.rb",
-    __file_templates["templates/mailers/user_mailer.rb"]
+  file "app/mailers/auth_mailer.rb",
+    __file_templates["templates/mailers/auth_mailer.rb"]
+
+  
+
+  file "app/views/auth/passwords/new.html.erb",
+    __file_templates["templates/views/auth/passwords/new.html.erb"]
+
+  
+
+  file "app/views/auth/passwords/edit.html.erb",
+    __file_templates["templates/views/auth/passwords/edit.html.erb"]
+
+  
+
+  file "app/views/auth/registrations/new.html.erb",
+    __file_templates["templates/views/auth/registrations/new.html.erb"]
+
+  
+
+  file "app/views/auth/sessions/new.html.erb",
+    __file_templates["templates/views/auth/sessions/new.html.erb"]
 
   
 
@@ -16,38 +36,18 @@ def apply_template!
 
   
 
-  file "app/views/user/passwords/new.html.erb",
-    __file_templates["templates/views/user/passwords/new.html.erb"]
+  file "app/controllers/auth/passwords_controller.rb",
+    __file_templates["templates/controllers/auth/passwords_controller.rb"]
 
   
 
-  file "app/views/user/passwords/edit.html.erb",
-    __file_templates["templates/views/user/passwords/edit.html.erb"]
+  file "app/controllers/auth/sessions_controller.rb",
+    __file_templates["templates/controllers/auth/sessions_controller.rb"]
 
   
 
-  file "app/views/user/registrations/new.html.erb",
-    __file_templates["templates/views/user/registrations/new.html.erb"]
-
-  
-
-  file "app/views/user/sessions/new.html.erb",
-    __file_templates["templates/views/user/sessions/new.html.erb"]
-
-  
-
-  file "app/controllers/user/passwords_controller.rb",
-    __file_templates["templates/controllers/user/passwords_controller.rb"]
-
-  
-
-  file "app/controllers/user/sessions_controller.rb",
-    __file_templates["templates/controllers/user/sessions_controller.rb"]
-
-  
-
-  file "app/controllers/user/registrations_controller.rb",
-    __file_templates["templates/controllers/user/registrations_controller.rb"]
+  file "app/controllers/auth/registrations_controller.rb",
+    __file_templates["templates/controllers/auth/registrations_controller.rb"]
 
   
 
@@ -75,12 +75,12 @@ def __file_templates
   @__file_templates_data = {}
   
 
-  @__file_templates_data["templates/mailers/user_mailer.rb"] = <<~EOF
+  @__file_templates_data["templates/mailers/auth_mailer.rb"] = <<~EOF
 
 # frozen_string_literal: true
 
 # user related mails
-class UserMailer < ApplicationMailer
+class AuthMailer < ApplicationMailer
   default from: 'from@example.com'
   layout 'mailer'
 
@@ -96,23 +96,7 @@ end
 
   
 
-  @__file_templates_data["templates/views/user_mailer/reset_password_email.text.erb"] = <<~EOF
-
-Hello, <%= @user.email %>
-===============================================
-
-You have requested to reset your password.
-
-To choose a new password, just follow this link: <%= @url %>
-
-Have a great day!
-
-
-  EOF
-
-  
-
-  @__file_templates_data["templates/views/user/passwords/new.html.erb"] = <<~EOF
+  @__file_templates_data["templates/views/auth/passwords/new.html.erb"] = <<~EOF
 
 <h1>forgot password</h1>
 <%= form_with url: { action: :create } do |f| %>
@@ -128,7 +112,7 @@ Have a great day!
 
   
 
-  @__file_templates_data["templates/views/user/passwords/edit.html.erb"] = <<~EOF
+  @__file_templates_data["templates/views/auth/passwords/edit.html.erb"] = <<~EOF
 
 <h1>set new password</h1>
 <%= form_with model: @user, url: { action: :update } do |f| %>
@@ -148,7 +132,7 @@ Have a great day!
 
   
 
-  @__file_templates_data["templates/views/user/registrations/new.html.erb"] = <<~EOF
+  @__file_templates_data["templates/views/auth/registrations/new.html.erb"] = <<~EOF
 
 <h1>sign up</h1>
 <%= form_with model: @user, url: { action: :create } do |f| %>
@@ -172,7 +156,7 @@ Have a great day!
 
   
 
-  @__file_templates_data["templates/views/user/sessions/new.html.erb"] = <<~EOF
+  @__file_templates_data["templates/views/auth/sessions/new.html.erb"] = <<~EOF
 
 <h1>sign in</h1>
 <%= form_with model: @user, url: { action: :create } do |f| %>
@@ -192,12 +176,28 @@ Have a great day!
 
   
 
-  @__file_templates_data["templates/controllers/user/passwords_controller.rb"] = <<~EOF
+  @__file_templates_data["templates/views/user_mailer/reset_password_email.text.erb"] = <<~EOF
+
+Hello, <%= @user.email %>
+===============================================
+
+You have requested to reset your password.
+
+To choose a new password, just follow this link: <%= @url %>
+
+Have a great day!
+
+
+  EOF
+
+  
+
+  @__file_templates_data["templates/controllers/auth/passwords_controller.rb"] = <<~EOF
 
 # frozen_string_literal: true
 
 # Reset password flow
-class User::PasswordsController < ApplicationController
+class Auth::PasswordsController < ApplicationController
   skip_before_action :require_login
 
   def new; end
@@ -205,7 +205,7 @@ class User::PasswordsController < ApplicationController
   def create
     @user = User.find_by email: params[:email]
     @user&.generate_reset_password_token!
-    UserMailer.reset_password_email(@user).deliver_now
+    AuthMailer.reset_password_email(@user).deliver_now
     redirect_to({ action: :new }, flash: { info: 'please check your email' })
   end
 
@@ -244,12 +244,12 @@ end
 
   
 
-  @__file_templates_data["templates/controllers/user/sessions_controller.rb"] = <<~EOF
+  @__file_templates_data["templates/controllers/auth/sessions_controller.rb"] = <<~EOF
 
 # frozen_string_literal: true
 
 # User login / logout; user "Sign In/Out" in user text
-class User::SessionsController < ApplicationController
+class Auth::SessionsController < ApplicationController
   skip_before_action :require_login
 
   # login form
@@ -288,12 +288,12 @@ end
 
   
 
-  @__file_templates_data["templates/controllers/user/registrations_controller.rb"] = <<~EOF
+  @__file_templates_data["templates/controllers/auth/registrations_controller.rb"] = <<~EOF
 
 # frozen_string_literal: true
 
 # User registration and password resets
-class User::RegistrationsController < ApplicationController
+class Auth::RegistrationsController < ApplicationController
   skip_before_action :require_login
 
   # Sign up form

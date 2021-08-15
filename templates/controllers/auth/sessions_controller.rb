@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # User login / logout; user "Sign In/Out" in user text
-class User::SessionsController < ApplicationController
+class Auth::SessionsController < ApplicationController
   skip_before_action :require_login
 
   # login form
