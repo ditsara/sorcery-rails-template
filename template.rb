@@ -11,6 +11,31 @@ def apply_template!
 
   
 
+  file "app/views/user_mailer/reset_password_email.text.erb",
+    __file_templates["templates/views/user_mailer/reset_password_email.text.erb"]
+
+  
+
+  file "app/views/user/passwords/new.html.erb",
+    __file_templates["templates/views/user/passwords/new.html.erb"]
+
+  
+
+  file "app/views/user/passwords/edit.html.erb",
+    __file_templates["templates/views/user/passwords/edit.html.erb"]
+
+  
+
+  file "app/views/user/registrations/new.html.erb",
+    __file_templates["templates/views/user/registrations/new.html.erb"]
+
+  
+
+  file "app/views/user/sessions/new.html.erb",
+    __file_templates["templates/views/user/sessions/new.html.erb"]
+
+  
+
   file "app/controllers/user/passwords_controller.rb",
     __file_templates["templates/controllers/user/passwords_controller.rb"]
 
@@ -65,6 +90,102 @@ class UserMailer < ApplicationMailer
     mail(to: @user.email, subject: 'Your password has been reset')
   end
 end
+
+
+  EOF
+
+  
+
+  @__file_templates_data["templates/views/user_mailer/reset_password_email.text.erb"] = <<~EOF
+
+Hello, <%= @user.email %>
+===============================================
+
+You have requested to reset your password.
+
+To choose a new password, just follow this link: <%= @url %>
+
+Have a great day!
+
+
+  EOF
+
+  
+
+  @__file_templates_data["templates/views/user/passwords/new.html.erb"] = <<~EOF
+
+<h1>forgot password</h1>
+<%= form_with url: { action: :create } do |f| %>
+  <fieldset>
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+  </fieldset>
+  <%= f.submit %>
+<% end %>
+
+
+  EOF
+
+  
+
+  @__file_templates_data["templates/views/user/passwords/edit.html.erb"] = <<~EOF
+
+<h1>set new password</h1>
+<%= form_with model: @user, url: { action: :update } do |f| %>
+  <fieldset>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </fieldset>
+  <fieldset>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+  </fieldset>
+  <%= f.submit %>
+<% end %>
+
+
+  EOF
+
+  
+
+  @__file_templates_data["templates/views/user/registrations/new.html.erb"] = <<~EOF
+
+<h1>sign up</h1>
+<%= form_with model: @user, url: { action: :create } do |f| %>
+  <fieldset>
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+  </fieldset>
+  <fieldset>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </fieldset>
+  <fieldset>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+  </fieldset>
+  <%= f.submit %>
+<% end %>
+
+
+  EOF
+
+  
+
+  @__file_templates_data["templates/views/user/sessions/new.html.erb"] = <<~EOF
+
+<h1>sign in</h1>
+<%= form_with model: @user, url: { action: :create } do |f| %>
+  <fieldset>
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </fieldset>
+  <fieldset>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </fieldset>
+  <%= f.submit "Login" %>
+<% end %>
 
 
   EOF

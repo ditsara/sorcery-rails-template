@@ -1,0 +1,12 @@
+<h1>sign in</h1>
+<%= form_with model: @user, url: { action: :create } do |f| %>
+  <fieldset>
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </fieldset>
+  <fieldset>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </fieldset>
+  <%= f.submit "Login" %>
+<% end %>

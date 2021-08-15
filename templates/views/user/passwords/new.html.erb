@@ -1,0 +1,8 @@
+<h1>forgot password</h1>
+<%= form_with url: { action: :create } do |f| %>
+  <fieldset>
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+  </fieldset>
+  <%= f.submit %>
+<% end %>

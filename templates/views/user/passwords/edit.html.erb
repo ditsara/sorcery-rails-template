@@ -1,0 +1,12 @@
+<h1>set new password</h1>
+<%= form_with model: @user, url: { action: :update } do |f| %>
+  <fieldset>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </fieldset>
+  <fieldset>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+  </fieldset>
+  <%= f.submit %>
+<% end %>
