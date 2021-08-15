@@ -1,0 +1,47 @@
+<% TEMPLATE_FILES_DIR = "templates/**/*.{rb,html.erb}" %>
+
+def apply_template!
+  gem 'sorcery'
+
+  # write each of our template files into the appropriate location
+  <% Dir[TEMPLATE_FILES_DIR].each do |template_file| %>
+
+  file "<%= template_file.sub(/^templates/, "app") %>",
+    __file_templates["<%= template_file %>"]
+
+  <% end %>
+
+  route <<~EOF
+    namespace :user do
+      resource :registrations, only: %i[new create]
+      resource :sessions, only: %i[new create destroy]
+      resource :profiles, only: %i[show update]
+      resources :passwords, only: %i[new create edit update]
+    end
+  EOF
+
+  after_bundle do
+    generate("sorcery:install", "remember_me", "reset_password")
+  end
+end
+
+# generated - read all the files in `templates/` into one big hash
+# (of filename => contents); this packages everything into the final
+# `template.rb` file so we can be agnostic to whether we're accessing the
+# template locally, or git, etc.
+def __file_templates
+  return @__file_templates_data if @__file_templates_data
+
+  @__file_templates_data = {}
+  <% Dir[TEMPLATE_FILES_DIR].each do |template_file| %>
+
+  @__file_templates_data["<%= template_file %>"] = <<~EOF
+
+<%= File.read template_file %>
+
+  EOF
+
+  <% end %>
+end
+
+apply_template!

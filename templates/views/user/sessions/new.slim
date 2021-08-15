@@ -1,0 +1,14 @@
+= form_with model: @user, url: { action: :create } do |f|
+  fieldset
+    = f.label :email
+    = f.text_field :email
+  fieldset
+    = f.label :password
+    = f.password_field :password
+  = f.submit "Login"
+
+= link_to 'Forgot Password', new_user_password_path
+
+- if Rails.env.development?
+  = button_to 'Test Login', action: :create,
+    params: { 'user[email]': 'test@test.com', 'user[password]': '12341234' }
